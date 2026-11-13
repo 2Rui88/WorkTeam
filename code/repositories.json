@@ -1,0 +1,7 @@
+{
+  "ai-cunchu-agent": {
+    "name": "AI_CunChu_Agent",
+    "url": "https://github.com/2Rui88/AI_CunChu_Agent",
+    "modules": ["frontend", "backend"]
+  }
+}

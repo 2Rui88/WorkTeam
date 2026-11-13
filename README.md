@@ -4,7 +4,7 @@ WorkTeam 是团队与 Agent 共用的研发工作空间。站点从 Git 中的 M
 
 ## 本地运行
 
-需要 Node.js 20 或更高版本。
+需要 Node.js 22 或更高版本，以及 Git。
 
 ```sh
 npm ci
@@ -16,3 +16,18 @@ npm run dev
 ## 文档
 
 在 `src/content/` 维护项目文档。从 [开始阅读](src/content/guide/index.md) 进入，或查看 [AI 云存储示例](src/content/example/index.md)。
+
+## 接入业务仓
+
+如果本地已有 `AI_CunChu_Agent`，直接使用已有检出。否则从 WorkTeam 根目录运行：
+
+```sh
+git clone https://github.com/2Rui88/AI_CunChu_Agent.git ../AI_CunChu_Agent
+```
+
+```sh
+npm run workspace:init
+npm run workspace:check
+```
+
+如检出位置不同，修改 `code/projects.local.json` 中的路径，或使用站点的「仓库配置」页面生成文件。详细步骤见 [仓库配置](src/content/guide/repositories.md)。

@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": { "node": ">=22" },
   "scripts": {
     "dev": "vitepress dev src/content --host 127.0.0.1",
     "build": "vitepress build src/content",
-    "preview": "vitepress preview src/content --host 127.0.0.1"
+    "preview": "vitepress preview src/content --host 127.0.0.1",
+    "workspace:init": "node scripts/workspace.mjs init",
+    "workspace:check": "node scripts/workspace.mjs check"
   },
   "devDependencies": {
+    "ajv": "8.20.0",
     "vitepress": "1.6.4"
   },
   "overrides": {

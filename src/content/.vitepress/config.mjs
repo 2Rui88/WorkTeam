@@ -27,6 +27,7 @@ export default defineConfig({
     nav: [
       { text: '开始阅读', link: '/guide/' },
       { text: '示例项目', link: '/example/' },
+      { text: '仓库配置', link: '/guide/repositories' },
     ],
     sidebar: [
       sidebarSection('使用指南', 'guide'),

@@ -1,0 +1,17 @@
+{
+  "product": {
+    "label": "产品",
+    "paths": ["src/content/example/"],
+    "skill": ".agents/skills/workteam-product/SKILL.md"
+  },
+  "development": {
+    "label": "研发",
+    "paths": ["ai-cunchu-agent:frontend/", "ai-cunchu-agent:backend/"],
+    "skill": ".agents/skills/workteam-development/SKILL.md"
+  },
+  "qa": {
+    "label": "测试",
+    "paths": ["ai-cunchu-agent:backend/tests/", "harness/tasks/"],
+    "skill": ".agents/skills/workteam-qa/SKILL.md"
+  }
+}

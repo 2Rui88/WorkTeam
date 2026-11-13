@@ -1,0 +1,7 @@
+{
+  "$schema": "./projects.schema.json",
+  "roles": ["development", "qa"],
+  "repositories": {
+    "ai-cunchu-agent": "../AI_CunChu_Agent"
+  }
+}
