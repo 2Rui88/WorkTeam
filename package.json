@@ -9,7 +9,10 @@
     "build": "vitepress build src/content",
     "preview": "vitepress preview src/content --host 127.0.0.1",
     "workspace:init": "node scripts/workspace.mjs init",
-    "workspace:check": "node scripts/workspace.mjs check"
+    "workspace:check": "node scripts/workspace.mjs check",
+    "task:check": "node scripts/workspace.mjs task-check",
+    "task:show": "node scripts/workspace.mjs task-show",
+    "task:verify": "node scripts/workspace.mjs task-verify"
   },
   "devDependencies": {
     "ajv": "8.20.0",

@@ -31,3 +31,13 @@ npm run workspace:check
 ```
 
 如检出位置不同，修改 `code/projects.local.json` 中的路径，或使用站点的「仓库配置」页面生成文件。详细步骤见 [仓库配置](src/content/guide/repositories.md)。
+
+## 用任务 ID 接手
+
+```sh
+npm run task:check
+npm run task:show -- WT-001
+npm run task:verify -- WT-001
+```
+
+[WT-001](harness/tasks/WT-001.json) 使用 AI_CunChu_Agent 的工具注册测试演示需求、代码、验证证据与交接。重跑业务测试需要对应基线的干净检出与 Python 依赖，见 [任务验收](src/content/guide/tasks.md)。Agent 从 [AGENTS.md](AGENTS.md) 开始。

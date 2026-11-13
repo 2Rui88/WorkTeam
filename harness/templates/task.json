@@ -1,0 +1,22 @@
+{
+  "$schema": "../task.schema.json",
+  "id": "WT-002",
+  "title": "用可观察的结果描述任务",
+  "status": "planned",
+  "repository": "ai-cunchu-agent",
+  "revision": "填写实际验证基线的完整 Git SHA",
+  "references": ["src/content/example/tool-registry.md"],
+  "scope": ["backend/tests/test_tool_registry.py"],
+  "criteria": ["填写可检查的验收条件"],
+  "changes": [],
+  "command": {
+    "cwd": "backend",
+    "program": "python",
+    "args": ["-m", "pytest", "-q", "tests/test_tool_registry.py"]
+  },
+  "evidence": {
+    "outcome": "not_run",
+    "summary": "等待执行验证。"
+  },
+  "handoff": "填写接手人需要知道的下一步。"
+}

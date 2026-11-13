@@ -22,3 +22,7 @@
 | `backend/tests/` | 工具注册、检索和队列等业务测试。 |
 
 WorkTeam 的文档站可独立运行。业务服务的启动方式见 [示例项目 README](https://github.com/2Rui88/AI_CunChu_Agent/blob/4103c22c4578604bfc2b14f5f9f85b816c5e0396/README.md)。
+
+## 验收示例
+
+从 [文件助手工具注册](./tool-registry.md) 进入需求与源码，再到 [WT-001](../guide/tasks.md#wt-001) 查看验收证据并重跑。

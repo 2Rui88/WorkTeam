@@ -1,13 +1,12 @@
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawnSync } from 'node:child_process'
 import { copyFileSync, existsSync, readFileSync, realpathSync, statSync, constants } from 'node:fs'
 import { homedir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { configErrors } from '../code/config.mjs'
 import repositories from '../code/repositories.json' with { type: 'json' }
 import roles from '../harness/roles.json' with { type: 'json' }
+import { isWithin, readTasks, taskById, workspaceRoot as root } from '../harness/tasks.mjs'
 
-const root = fileURLToPath(new URL('../', import.meta.url))
 const localFile = join(root, 'code/projects.local.json')
 
 function init() {
@@ -57,24 +56,59 @@ function checkRepository(id, configuredPath) {
       throw new Error(`${id} 缺少模块目录：${module}`)
     }
   }
-  const changes = git('status', '--porcelain') ? '有本地改动' : '工作区干净'
-  console.log(`✓ ${id} @ ${git('rev-parse', 'HEAD')}（${changes}）\n  ${path}`)
+  return { path, revision: git('rev-parse', 'HEAD'), dirty: Boolean(git('status', '--porcelain')) }
 }
 
-function check() {
+function readConfig() {
   if (!existsSync(localFile)) throw new Error('缺少本地配置，请先运行 npm run workspace:init。')
   const config = JSON.parse(readFileSync(localFile, 'utf8').replace(/^\uFEFF/, ''))
   const errors = configErrors(config)
   if (errors.length) throw new Error(errors.join('\n'))
-  for (const [id, path] of Object.entries(config.repositories)) checkRepository(id, path)
+  return config
+}
+
+function check() {
+  const config = readConfig()
+  for (const [id, configuredPath] of Object.entries(config.repositories)) {
+    const { path, revision, dirty } = checkRepository(id, configuredPath)
+    console.log(`✓ ${id} @ ${revision}（${dirty ? '有本地改动' : '工作区干净'}）\n  ${path}`)
+  }
   console.log(`角色：${config.roles.map(id => roles[id].label).join('、')}`)
+}
+
+function verifyTask(id) {
+  const task = taskById(id)
+  const config = readConfig()
+  const configuredPath = config.repositories[task.repository]
+  if (!configuredPath) throw new Error(`请先登记任务使用的仓库：${task.repository}`)
+  const { path, revision, dirty } = checkRepository(task.repository, configuredPath)
+  if (revision !== task.revision || dirty) {
+    throw new Error(`请将本地配置指向 ${task.revision} 的干净检出。当前 HEAD：${revision}，${dirty ? '有本地改动' : '工作区干净'}。`)
+  }
+  for (const item of [...task.scope, task.command.cwd]) {
+    const target = resolve(path, item)
+    if (!isWithin(path, target) || !existsSync(target) || !isWithin(realpathSync(path), realpathSync(target))) {
+      throw new Error(`任务路径无效：${item}`)
+    }
+  }
+  const { program, args, cwd } = task.command
+  console.log(`${task.id} @ ${revision}\n${cwd}> ${[program, ...args].join(' ')}`)
+  const result = spawnSync(program, args, { cwd: resolve(path, cwd), stdio: 'inherit' })
+  if (result.error) throw new Error(`无法启动 ${program}：${result.error.message}`)
+  if (result.status !== 0) throw new Error(`${id} 验证失败（${result.status ?? result.signal}）。`)
+  const after = checkRepository(task.repository, configuredPath)
+  if (after.revision !== revision || after.dirty) throw new Error('验证期间工作区状态发生变化，请复核结果。')
+  console.log(`${id} 验证通过。请复核输出并将本次证据写入任务记录。`)
 }
 
 try {
   switch (process.argv[2]) {
     case 'init': init(); break
     case 'check': check(); break
-    default: throw new Error('用法：node scripts/workspace.mjs <init|check>')
+    case 'task-check': console.log(`✓ ${readTasks().length} 条任务记录与角色引用通过校验。`); break
+    case 'task-show': console.log(JSON.stringify(taskById(process.argv[3]), null, 2)); break
+    case 'task-verify': verifyTask(process.argv[3]); break
+    default: throw new Error('用法：node scripts/workspace.mjs <init|check|task-check|task-show|task-verify>')
   }
 } catch (error) {
   console.error(error.message)

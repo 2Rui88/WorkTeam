@@ -2,3 +2,4 @@ node_modules/
 src/content/.vitepress/cache/
 src/content/.vitepress/dist/
 code/projects.local.json
+.workteam/

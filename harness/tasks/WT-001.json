@@ -1,0 +1,28 @@
+{
+  "$schema": "../task.schema.json",
+  "id": "WT-001",
+  "title": "AI 助手工具注册表基线验收",
+  "status": "pending_acceptance",
+  "repository": "ai-cunchu-agent",
+  "revision": "4103c22c4578604bfc2b14f5f9f85b816c5e0396",
+  "references": ["src/content/example/index.md", "src/content/example/tool-registry.md"],
+  "scope": ["backend/app/tool_registry.py", "backend/app/routers/agent.py", "backend/tests/test_tool_registry.py"],
+  "criteria": [
+    "八项工具的注册顺序、名称唯一性、异步处理器及参数结构通过测试。",
+    "share_file 和 delete_file 是注册表中标记为需要确认的工具。",
+    "路由通过注册表查询工具及确认标记，基线的 14 项回归测试通过。"
+  ],
+  "changes": [],
+  "command": {
+    "cwd": "backend",
+    "program": "python",
+    "args": ["-m", "pytest", "-q", "tests/test_tool_registry.py"]
+  },
+  "evidence": {
+    "outcome": "passed",
+    "summary": "14 passed。覆盖工具定义、危险操作标记、能力说明和路由对注册表的依赖。",
+    "environment": "Windows，Python 3.11，pytest 8.3.4",
+    "date": "2026-11-13"
+  },
+  "handoff": "待评审人复核测试结果。此任务记录上游现有基线，无业务代码变更。"
+}

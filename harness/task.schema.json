@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "status", "repository", "revision", "references", "scope", "criteria", "command", "evidence", "handoff"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": { "type": "string", "pattern": "^WT-[0-9]{3,}$" },
+    "title": { "$ref": "#/definitions/text" },
+    "status": { "enum": ["planned", "in_progress", "pending_acceptance", "accepted"] },
+    "repository": { "$ref": "#/definitions/text" },
+    "revision": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "references": { "$ref": "#/definitions/list" },
+    "scope": { "$ref": "#/definitions/list" },
+    "criteria": { "$ref": "#/definitions/list" },
+    "changes": { "type": "array", "items": { "$ref": "#/definitions/text" } },
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cwd", "program", "args"],
+      "properties": {
+        "cwd": { "$ref": "#/definitions/text" },
+        "program": { "$ref": "#/definitions/text" },
+        "args": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "summary"],
+      "properties": {
+        "outcome": { "enum": ["passed", "failed", "not_run"] },
+        "summary": { "$ref": "#/definitions/text" },
+        "environment": { "$ref": "#/definitions/text" },
+        "date": { "$ref": "#/definitions/date" }
+      },
+      "allOf": [{
+        "if": { "properties": { "outcome": { "enum": ["passed", "failed"] } } },
+        "then": { "required": ["environment", "date"] }
+      }]
+    },
+    "handoff": { "$ref": "#/definitions/text" },
+    "acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewer", "date"],
+      "properties": {
+        "reviewer": { "$ref": "#/definitions/text" },
+        "date": { "$ref": "#/definitions/date" }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "enum": ["pending_acceptance", "accepted"] } } },
+      "then": { "properties": { "evidence": { "type": "object", "properties": { "outcome": { "const": "passed" } } } } }
+    },
+    {
+      "if": { "properties": { "status": { "const": "accepted" } } },
+      "then": { "required": ["acceptance"] },
+      "else": { "not": { "required": ["acceptance"] } }
+    }
+  ],
+  "definitions": {
+    "text": { "type": "string", "pattern": "\\S" },
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "list": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/definitions/text" } }
+  }
+}

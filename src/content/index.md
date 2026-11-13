@@ -20,4 +20,7 @@ features:
   - title: 本地开发
     details: 在 Git 中维护 Markdown，在浏览器中查看。
     link: /guide/
+  - title: 任务验收
+    details: 按任务 ID 查阅验收条件、代码版本和验证结果。
+    link: /guide/tasks
 ---
