@@ -1,0 +1,56 @@
+:root {
+  --vp-font-family-base: 'Geist', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --vp-font-family-mono: 'IBM Plex Mono', Consolas, monospace;
+  --vp-c-brand-1: #365eeb;
+  --vp-c-brand-2: #2548ca;
+  --vp-c-brand-3: #365eeb;
+  --vp-c-brand-soft: #365eeb16;
+  --vp-sidebar-bg-color: #f7f8fc;
+}
+
+.dark {
+  --vp-c-brand-1: #a4b5ff;
+  --vp-c-brand-2: #8ba0ff;
+  --vp-c-brand-3: #365eeb;
+  --vp-c-brand-soft: #8ba0ff23;
+  --vp-sidebar-bg-color: #161820;
+}
+
+.VPNavBarTitle .title {
+  gap: 10px;
+  letter-spacing: -.035em;
+}
+
+.VPNavBarTitle .title::before {
+  display: inline-grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: 7px;
+  background: #365eeb;
+  color: white;
+  content: 'W';
+  font-weight: 750;
+  font-size: 14px;
+}
+
+.VPHero .name, .VPHero .text {
+  letter-spacing: -.055em;
+}
+
+.VPHero .name {
+  --vp-home-hero-name-color: var(--vp-c-brand-1);
+}
+
+.VPHero {
+  background: radial-gradient(ellipse at 22% 15%, var(--vp-c-brand-soft), transparent 70%);
+}
+
+.VPFeature {
+  border: 1px solid var(--vp-c-divider) !important;
+  background: var(--vp-c-bg) !important;
+}
+
+.VPDoc .vp-doc h1 {
+  letter-spacing: -.04em;
+}

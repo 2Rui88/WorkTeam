@@ -1,0 +1,18 @@
+{
+  "name": "workteam",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "vitepress dev src/content --host 127.0.0.1",
+    "build": "vitepress build src/content",
+    "preview": "vitepress preview src/content --host 127.0.0.1"
+  },
+  "devDependencies": {
+    "vitepress": "1.6.4"
+  },
+  "overrides": {
+    "vite": "6.4.6"
+  }
+}
